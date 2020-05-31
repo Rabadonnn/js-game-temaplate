@@ -33,15 +33,28 @@ module.exports = {
 //   },
   module: {
     rules: [
-      {
-        // Preprocess our own .css files
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: [
-            MiniCssExtractPlugin.loader, // instead of style-loader
-            'css-loader'
-        ]
-      }  
+        {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['react']
+                }
+              }
+            ],
+        }
+        ,
+        {
+            // Preprocess our own .css files
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [
+                MiniCssExtractPlugin.loader, // instead of style-loader
+                'css-loader'
+            ]
+        }  
     ]
   },
   devServer: {
@@ -58,6 +71,10 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.EnvironmentPlugin({
+        projectUUID: "playcent-project-uuid",
+        dbDomain: "http://playcent.com"
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: './index.html',

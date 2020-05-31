@@ -1,3 +1,5 @@
+import React from 'react';
+
 let config = require("visual-config-exposer").default;
 
 let $ = require("jquery")
@@ -8,6 +10,9 @@ let PreGameScreen = require("./pregame");
 let PostGameScreen = require("./postgame");
 
 // check if it is a mobile device
+
+const element = <h1>Hello, world!</h1>;
+
 
 window.isMobile = function() {
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
