@@ -152,7 +152,7 @@
             "header": "Post Game Screen",
             "disabled": false,
             "fields": [
-                {
+                 {
                     "key": "scoreText",
                     "header": "Text before score",
                     "type": "text"
@@ -160,6 +160,11 @@
                 {
                     "key": "textColor",
                     "header": "Text Color",
+                    "type": "color"
+                },
+                {
+                    "key": "buttonTextColor",
+                    "header": "Button text color",
                     "type": "color"
                 },
                 {
@@ -190,6 +195,21 @@
                 {
                     "key": "customText",
                     "header": "Custom text",
+                    "type": "text"
+                },
+                {
+                    "key": "submitName",
+                    "header": "Show name field",
+                    "type": "boolean"
+                },
+                {
+                    "key": "submitEmail",
+                    "header": "Show email field",
+                    "type": "boolean"
+                },
+                {
+                    "key": "submitScoreText",
+                    "header": "Submit score button text",
                     "type": "text"
                 },
                 {
@@ -258,11 +278,15 @@
             "playButtonText": "Play Again",
             "buttonColor": "#000000",
             "cardColor": "#ffffff",
-            "textColor": "#ffffff",
+            "textColor": "#000000",
+            "buttonTextColor": "#ffffff",
             "showLeadeboardButtonPostGameScreen": true,
+            "submitScoreText": "Submit score",
             "leaderboardButtonText": "Leaderboard",
-            "showText": false,
+            "showText": true,
             "customText": "Hello world",
+            "submitName": true,
+            "submitEmail": true,
             "showCTA": true,
             "ctaText": "Check out our page for more",
             "ctaButtonText": "Go to Playcent",
