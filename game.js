@@ -175,6 +175,60 @@ function setGradient(x, y, w, h, c1, c2) {
     }
 }
 
+class FloatingText {
+    constructor(text, x, y, acc, size, color) {
+        this.x = x;
+        this.text = text;
+        this.y = y;
+        this.acc = acc;
+        this.size = size;
+        this.color = color;
+        this.lifespan = 1;
+        this.iLifespan = 1;
+        this.easing = "easeInQuad";
+        this.dead = false;
+        this.startEase = false;
+        this.font = "Arial";
+        this.style = NORMAL;
+        this.align = CENTER;
+    }
+
+    setLifespan(amt) {
+        this.lifespan = amt;
+        this.iLifespan = amt;
+    }
+
+    draw() {
+        if (!this.startEase) {
+            shifty.tween({
+                from: { size: this.size },
+                to: { size: 0 },
+                duration: this.iLifespan * 1000,
+                easing: this.easing,
+                step: state => { this.size = state.size }
+            });
+            this.startEase = true;
+        }
+
+        this.lifespan -= deltaTime / 1000;
+        this.dead = this.lifespan <= 0;
+
+        if (!this.dead) {
+
+            this.x += this.acc.x;
+            this.y += this.acc.y;
+
+            noStroke();
+            fill(this.color);
+            textAlign(this.align);
+            textSize(this.size);
+            textStyle(this.style);
+            textFont(this.font);
+            text(this.text, this.x, this.y);
+        }
+    }
+}
+
 class Particle {
     constructor(x, y, acc, size, _color) {
         this.x = x;
@@ -191,6 +245,8 @@ class Particle {
         this.image;
         this.rotation = 0;
         this.rotSpeed = 0;
+        this.easing = "easeOutSine";
+        this.startEase = false;
     }
 
     setLifespan(lifespan) {
@@ -199,13 +255,23 @@ class Particle {
     }
 
     draw() {
-        if (this.lifespan > 0) this.size = map(this.lifespan, this.iLifespan, 0, this.iSize, 0);
+
+        if (!this.startEase) {
+            this.startEase = true;
+            shifty.tween({
+                from: { size: this.iSize },
+                to: { size: 0 },
+                duration: this.iLifespan * 1000,
+                easing: this.easing,
+                step: state => { this.size = state.size; }  
+            });
+        }
 
         this.lifespan -= deltaTime / 1000;
 
         this.rotation += this.rotSpeed * deltaTime / 1000;
 
-        if (this.lifespan <= 0) this.dead = true;
+        this.dead = this.lifespan <= 0;
 
         if (!this.dead) {
 

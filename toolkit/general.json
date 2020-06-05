@@ -247,7 +247,7 @@
     ],
     "config": {
         "preGameScreen": {
-            "titleText": "Stack The Blocks",
+            "titleText": "template",
             "titleTextSize": 30,
             "playButtonText": "Play",
             "cardColor": "#ffffff",
