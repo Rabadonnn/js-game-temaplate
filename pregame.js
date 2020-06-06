@@ -9,6 +9,10 @@ let Leaderboard = require("./postgame").leaderboard;
 
 let database = new Database();
 
+// I dont know about the quality of this code, but it works
+// can change most of it but be careful to keep the functionality
+// same with post game screen
+
 const Button = styled.button`
     width: 60%;
     height: 15%;

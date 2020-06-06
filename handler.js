@@ -47,6 +47,8 @@ $(fontCss).appendTo("head");
 
 window.soundEnabled = true;
 
+// can change this to any screen for deubugging purposes
+
 window.currentScreen = "preGameScreen";
 window.setScreen = function(screenName) {
     window.currentScreen = screenName;
