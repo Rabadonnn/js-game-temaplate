@@ -25,7 +25,7 @@ window.mobile = function() {
 let Game = require("./game");
 
 let PreGameScreen = require("./pregame");
-let PostGameScreen = require("./postgame");
+let PostGameScreen = require("./postgame").preGameScreen;
 
 // Load google font from config
 WebFont.load({
