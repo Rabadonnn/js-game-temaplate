@@ -268,7 +268,7 @@
             "instructions2": "Place new blocks over the old ones",
             "instructions3": "Have fun!",
             "textColor": "#000",
-            "theme": "assets/theme.ogg",
+            "theme": "assets/theme.mp3",
             "volume": "0.7",
             "tap": "assets/tap.wav",
             "lose": "assets/lose.wav"
