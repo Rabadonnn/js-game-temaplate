@@ -7,17 +7,11 @@ class Game {
         this.defaults();
     }
 
-    permaUpdate() {
+    permaUpdate() {}
 
-    }
+    updateGame() {}
 
-    updateGame() {
-
-    }
-
-    onMousePress() {
-    
-    }
+    onMousePress() {}
 
     finishGame() {
         if (!this.finished) {
@@ -34,9 +28,9 @@ class Game {
 
         // turn this var to true to end the game
         this.finished = false;
-        
+
         this.particles = [];
-    
+
         this.instructionsFontSize = height / 30;
         this.scoreFontSize = height / 20;
         this.delayBeforeExit = 1.2;
@@ -57,34 +51,48 @@ class Game {
             if (this.started) {
                 this.onMousePress();
             }
-        } else if (!mouseIsPressed ){
+        } else if (!mouseIsPressed) {
             this.mouse_pressed = false;
-        }        
+        }
     }
 
     calcBgImageSize() {
         // background image size calculations
         this.bgImage = window.images.background;
-        let originalRatios = {
-            width: window.innerWidth / this.bgImage.width,
-            height: window.innerHeight / this.bgImage.height
-        };
- 
-        let coverRatio = Math.max(originalRatios.width, originalRatios.height);
-        this.bgImageWidth = this.bgImage.width * coverRatio;
-        this.bgImageHeight = this.bgImage.height * coverRatio;
+
+        if (config.preGameScreen.backgroundMode == "fit") {
+            let size = calculateAspectRatioFit(this.bgImage.width, this.bgImage.height, width, height);
+            this.bgImageWidth = size.width;
+            this.bgImageHeight = size.height;
+        } else {
+            let originalRatios = {
+                width: window.innerWidth / this.bgImage.width,
+                height: window.innerHeight / this.bgImage.height,
+            };
+
+            let coverRatio = Math.max(originalRatios.width, originalRatios.height);
+            this.bgImageWidth = this.bgImage.width * coverRatio;
+            this.bgImageHeight = this.bgImage.height * coverRatio;
+        }
+        this.bgColor = color(config.preGameScreen.backgroundColor);
     }
 
     draw() {
-        clear();    
+        background(color(config.preGameScreen.backgroundColor));
         try {
-            image(this.bgImage, width / 2 - this.bgImageWidth / 2, height / 2 - this.bgImageHeight / 2, this.bgImageWidth, this.bgImageHeight);
+            image(
+                this.bgImage,
+                width / 2 - this.bgImageWidth / 2,
+                height / 2 - this.bgImageHeight / 2,
+                this.bgImageWidth,
+                this.bgImageHeight
+            );
         } catch (err) {
             this.calcBgImageSize();
         }
 
         if (window.currentScreen == "gameScreen") {
-            // Draw fps if in debug mode           
+            // Draw fps if in debug mode
             if (DEBUG) {
                 noStroke();
                 fill(0);
@@ -102,23 +110,26 @@ class Game {
                 this.updateGame();
             }
 
-            this.particles = this.particles.filter(p => {
+            this.particles = this.particles.filter((p) => {
                 p.draw();
                 return !p.dead;
-            })
+            });
 
-            // Animate instructions font size 
+            // Animate instructions font size
             // in and out
             if (this.instructionsFontSize - this.c_instructionsFontSize > 0.1 && !this.started) {
-                this.c_instructionsFontSize = lerp(this.c_instructionsFontSize, this.instructionsFontSize, 0.2);
+                this.c_instructionsFontSize = lerp(
+                    this.c_instructionsFontSize,
+                    this.instructionsFontSize,
+                    0.2
+                );
             }
 
             if (this.c_instructionsFontSize > 0.1) {
-           
                 if (this.started) {
-                    this.c_instructionsFontSize = lerp(this.c_instructionsFontSize, 0, 0.4); 
+                    this.c_instructionsFontSize = lerp(this.c_instructionsFontSize, 0, 0.4);
                 }
-                
+
                 textStyle(NORMAL);
                 noStroke();
                 fill(color(config.settings.textColor));
@@ -133,7 +144,7 @@ class Game {
 
             if (this.started) {
                 this.c_scoreFontSize = lerp(this.c_scoreFontSize, this.scoreFontSize, 0.2);
-                
+
                 textStyle(NORMAL);
                 noStroke();
                 fill(color(config.settings.textColor));
@@ -145,11 +156,11 @@ class Game {
 
             if (this.finished) {
                 this.delayBeforeExit -= deltaTime / 1000;
-            
+
                 if (this.delayBeforeExit < 0) {
                     window.setEndScreenWithScore(this.score);
                 }
-            }       
+            }
         }
     }
 }
@@ -157,8 +168,12 @@ class Game {
 // Helper functions
 
 function playSound(sound) {
-    if (window.soundEnabled) {
-        sound.play();
+    try {
+        if (window.soundEnabled) {
+            sound.play();
+        }
+    } catch (err) {
+        console.error("Couldn't play sound");
     }
 }
 
@@ -205,7 +220,9 @@ class FloatingText {
                 to: { size: 0 },
                 duration: this.iLifespan * 1000,
                 easing: this.easing,
-                step: state => { this.size = state.size }
+                step: (state) => {
+                    this.size = state.size;
+                },
             });
             this.startEase = true;
         }
@@ -214,7 +231,6 @@ class FloatingText {
         this.dead = this.lifespan <= 0;
 
         if (!this.dead) {
-
             this.x += this.acc.x;
             this.y += this.acc.y;
 
@@ -255,7 +271,6 @@ class Particle {
     }
 
     draw() {
-
         if (!this.startEase) {
             this.startEase = true;
             shifty.tween({
@@ -263,18 +278,19 @@ class Particle {
                 to: { size: 0 },
                 duration: this.iLifespan * 1000,
                 easing: this.easing,
-                step: state => { this.size = state.size; }  
+                step: (state) => {
+                    this.size = state.size;
+                },
             });
         }
 
         this.lifespan -= deltaTime / 1000;
 
-        this.rotation += this.rotSpeed * deltaTime / 1000;
+        this.rotation += (this.rotSpeed * deltaTime) / 1000;
 
         this.dead = this.lifespan <= 0;
 
         if (!this.dead) {
-
             this.x += this.acc.x;
             this.y += this.acc.y;
 
@@ -329,7 +345,7 @@ class Rectangle {
         }
         return false;
     }
-    
+
     debug() {
         if (DEBUG) {
             stroke(this.debugColor);
@@ -345,10 +361,12 @@ class Rectangle {
 }
 
 function intersectRect(r1, r2) {
-    return !(r2.left() > r1.right() ||
+    return !(
+        r2.left() > r1.right() ||
         r2.right() < r1.left() ||
         r2.top() > r1.bottom() ||
-        r2.bottom() < r1.top());
+        r2.bottom() < r1.top()
+    );
 }
 
 function randomParticleAcc(amt) {
@@ -362,6 +380,6 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
     return { width: srcWidth * ratio, height: srcHeight * ratio };
 }
 
-//------------------------------ 
+//------------------------------
 
 module.exports = Game;

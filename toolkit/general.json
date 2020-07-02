@@ -37,6 +37,20 @@
                     "type": "image"
                 },
                 {
+                    "key": "backgroundMode",
+                    "header": "Background image mode",
+                    "type": "dropdown",
+                    "options": [
+                        "cover",
+                        "fit"
+                    ]
+                },
+                {
+                    "key": "backgroundColor",
+                    "header": "Background Color",
+                    "type": "color"
+                },
+                {
                     "key": "titleImage",
                     "header": "Header Image",
                     "type": "image"
@@ -50,7 +64,7 @@
                         "maxValue": 400,
                         "stepSize": "1"
                     }
-                }, 
+                },
                 {
                     "key": "cardColor",
                     "header": "Card Color",
@@ -152,7 +166,7 @@
             "header": "Post Game Screen",
             "disabled": false,
             "fields": [
-                 {
+                {
                     "key": "scoreText",
                     "header": "Text before score",
                     "type": "text"
@@ -254,6 +268,8 @@
             "buttonColor": "#000000",
             "buttonTextColor": "#ffffff",
             "backgroundImage": "assets/background.png",
+            "backgroundColor": "#ffffff",
+            "backgroundMode": "fit",
             "titleImage": "assets/placeholder_logo.jpg",
             "titleImageSize": 200,
             "fontFamily": "Balsamiq Sans",
@@ -294,4 +310,3 @@
         }
     }
 }
-
